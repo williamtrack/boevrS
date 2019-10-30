@@ -1,4 +1,3 @@
-console.log('git test');
 const express = require('express');
 const app = express();
 let expressWs = require('express-ws')(app);
