@@ -3,8 +3,14 @@ module.exports = router;
 const multer = require('multer');
 const fs = require('fs');
 
+
+router.get('/test',function (req,res) {
+    let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
+    res.send(form);
+});
+
 //创建文件夹
-let uploadFolder = './upload/';
+let uploadFolder = __dirname + '/../upload';
 let createFolder = function (folder) {
     try {
         fs.accessSync(folder);
