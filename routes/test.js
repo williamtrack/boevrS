@@ -37,7 +37,6 @@ const upload = multer({storage: storage});
 const uploads = multer({storage: storage}).array('file');
 
 router.post('/upload', upload.single('file'), function (req, res) {
-    console.log(req.body);
     res.send('successfully upload!');
 });
 

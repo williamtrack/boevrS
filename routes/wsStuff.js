@@ -3,7 +3,7 @@ const wsObj = {};
 
 router.ws('/:uid', function (ws, req) {
     const uid = req.params.uid;
-    console.log(uid + ' is connecting!');
+    console.log('webSocket '+uid + ' is connecting!');
     wsObj[uid] = ws;
 
     for (let st in wsObj) {
@@ -28,7 +28,7 @@ router.ws('/:uid', function (ws, req) {
     });
 
     ws.on('close', function (msg) {
-        console.log(uid + ' is closed!');
+        console.log('webSocket '+ uid + ' is closed!');
         delete (wsObj[uid]);
     })
 });

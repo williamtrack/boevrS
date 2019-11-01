@@ -5,7 +5,7 @@ let expressWs = require('express-ws')(app);
 const createError = require('http-errors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const morgan = require('morgan');
 
 const SqlQuery = require('./utils/sqlQuery');
 //定义全局变量
@@ -15,7 +15,7 @@ sqlQuery = new SqlQuery();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+app.use(morgan('\x1B[34m:status \x1B[39m::remote-addr :method :url :res[content-length] \x1B[36m:response-time ms \x1B[39m:date[iso]'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
