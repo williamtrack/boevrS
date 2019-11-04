@@ -3,7 +3,7 @@ const wsObj = {};
 
 router.ws('/:uid', function (ws, req) {
     const uid = req.params.uid;
-    console.log('webSocket '+uid + ' is connecting!');
+    console.log('webSocket %s is connecting!',uid);
     wsObj[uid] = ws;
 
     for (let st in wsObj) {
