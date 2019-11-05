@@ -7,7 +7,7 @@ router.post('/updatePlan', function (req, res, next) {
     sqlQuery.query(sqlCmd, sqlParams).then((response) => {
         res.send(response);
     }, (err) => {
-        res.end();
+        res.end('err');
         console.log('updatePlan err.');
     });
 });
@@ -31,25 +31,29 @@ router.get('/getPlan', function (req, res) {
                     aa.lastDate = currentDate;
                     res.send(aa);
                 }, () => {
-                    res.send();
+                    res.send('err');
                     console.log('getPlan err.');
                 });
             }
 
         }, () => {
-            res.end();
-            console.log('getPlan err.')
+            res.end('err');
+            console.log('getPlan err.');
         })
     }, () => {
         res.end('err');
-        console.log('getPlan err')
+        console.log('getPlan err');
     });
 });
 
 router.get('/updateCurrentTime', function (req, res) {
+    let currentDate = new Date();
+    currentDate = [currentDate.getMonth() + 1, currentDate.getDate()].map(formatNumber).join('');
+    currentDate = parseInt(currentDate);
     snToChildId(req.query.sn).then((snToId) => {
-        let sqlCmd = 'update children set currentTime=' + req.query.currentTime + ' where binary id = '+snToId;
-        sqlQuery.query(sqlCmd).then(() => {
+        let sqlCmd = 'update children set currentTime=?,lastDate=? where binary id =?';
+        let sqlParams=[req.query.currentTime,currentDate,snToId];
+        sqlQuery.query(sqlCmd,sqlParams).then(() => {
             res.end('success');
         }, () => {
             res.end('err');
@@ -57,7 +61,7 @@ router.get('/updateCurrentTime', function (req, res) {
         });
     }, () => {
         res.end('err');
-        console.log('updateCurrentTime err')
+        console.log('updateCurrentTime err');
     });
 });
 
