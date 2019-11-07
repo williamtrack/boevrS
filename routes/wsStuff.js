@@ -3,7 +3,7 @@ const wsObj = {};
 
 router.ws('/:uid', function (ws, req) {
     const uid = req.params.uid;
-    console.log('webSocket %s is connecting!',uid);
+    console.log('webSocket %s is connecting!', uid);
     wsObj[uid] = ws;
 
     for (let st in wsObj) {
@@ -11,28 +11,52 @@ router.ws('/:uid', function (ws, req) {
     }
 
     ws.on('message', function (msg) {
+        console.log(msg);
         try {
-            console.log(msg);
-            console.log(JSON.parse(msg));
-            let {toId, type, data} = JSON.parse(msg);
-            const fromId = uid;
-            if (fromId != toId && wsObj[toId]) {
-                // wsObj[toId]   表示 接收方 与服务器的那条连接
-                // wsObj[fromId] 表示 发送方 与服务器的那条连接
-                wsObj[toId].send(JSON.stringify({fromId, type, data}));
-                // ws.send('abc');
-            }
+            var {toId, ctrl} = JSON.parse(msg);
+            var mess = {toId, ctrl};
+            var fromId = uid;
         } catch (e) {
             console.log(e);
+        }
+        if (fromId != toId) {
+            switch (mess.ctrl) {
+                case 'isOn':
+                    if (wsObj[toId]) {
+                        console.log('[][]');
+                        wsObj[fromId].send('isOnYes');
+                    } else {
+                        console.log('--');
+                        wsObj[fromId].send('isOnNo');
+                    }
+                    break;
+                default:
+                    if (wsObj[toId]) {
+                        switch (mess.ctrl) {
+                            case 'getPic':
+                                console.log('[][]');
+                                wsObj[toId].send(mess.ctrl);
+                                break;
+                            case 'text':
+                                console.log('----');
+                                wsObj[toId].send(JSON.stringify({fromId, ctrl}));
+                                break;
+                            default:
+                                console.log(mess.ctrl);
+                                wsObj[toId].send(mess.ctrl);
+                                break;
+                        }
+                    }
+                    break;
+            }
         }
     });
 
     ws.on('close', function (msg) {
-        console.log('webSocket '+ uid + ' is closed!');
+        console.log('webSocket ' + uid + ' is closed!');
         delete (wsObj[uid]);
     })
 });
-
 
 
 module.exports = router;

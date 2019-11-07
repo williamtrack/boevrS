@@ -1,5 +1,6 @@
 const router = require('express').Router();
 module.exports = router;
+
 const multer = require('multer');
 const fs = require('fs');
 
@@ -7,6 +8,21 @@ const fs = require('fs');
 router.get('/test',function (req,res) {
     let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
     res.send(form);
+});
+
+router.get('/test01',function (req,res) {
+    fs.readFile('./upload/logsTrain/0001.json', 'utf-8', function (err, data) {
+        // console.log(JSON.parse(data).logs[1].TestName);
+        let history=changeToJson(data);
+        console.log(JSON.parse(history).logs[0]);
+        if (err) {
+            console.log(err);
+        } else {
+            res.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});
+            //res.end(data);
+            res.end(data);
+        }
+    });
 });
 
 //创建文件夹
@@ -65,3 +81,9 @@ router.post('/uploads',function (req,res,next) {
         }
     });
 });
+
+function changeToJson(str){
+    let tmp=str.substring(0,str.length-1);
+    tmp='{"logs": ['+tmp+']}';
+    return tmp;
+}

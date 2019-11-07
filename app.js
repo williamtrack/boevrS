@@ -30,6 +30,8 @@ app.use('/device',require('./routes/device'));
 app.use('/children',require('./routes/children'));
 app.use('/user',require('./routes/user'));
 app.use('/test',require('./routes/test'));
+app.use('/ctrl',require('./routes/ctrl'));
+app.use('/logsTrain',require('./routes/logsTrain'));
 
 
 // catch 404 and forward to error handler
