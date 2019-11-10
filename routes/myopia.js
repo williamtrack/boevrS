@@ -3,7 +3,7 @@ module.exports = router;
 
 router.post('/updatePlan', function (req, res, next) {
     let sqlCmd = 'update children set minSta=?,minDyn=?,times=?,currentTime=?,lastDate=? where binary id = ?';
-    let sqlParams = [req.body.minSta, req.body.minDyn, req.body.times, 0, req.body.lastDate, req.body.id];
+    let sqlParams = [req.body.minSta, req.body.minDyn, req.body.times, 1, req.body.lastDate, req.body.id];
     sqlQuery.query(sqlCmd, sqlParams).then((response) => {
         res.send(response);
     }, (err) => {
@@ -23,11 +23,11 @@ router.get('/getPlan', function (req, res) {
             if (e[0].lastDate === currentDate) {
                 res.send(e);
             } else {
-                let sqlCmd = 'update children set currentTime=0,lastDate=' + currentDate + ' where binary id=' + snToId;
+                let sqlCmd = 'update children set currentTime=1,lastDate=' + currentDate + ' where binary id=' + snToId;
                 // console.log(sqlCmd);
                 sqlQuery.query(sqlCmd).then(() => {
                     let aa = e[0];
-                    aa.currentTime = 0;
+                    aa.currentTime = 1;
                     aa.lastDate = currentDate;
                     res.send(aa);
                 }, () => {

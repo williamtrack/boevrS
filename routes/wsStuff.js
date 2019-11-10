@@ -5,6 +5,7 @@ router.ws('/:uid', function (ws, req) {
     const uid = req.params.uid;
     console.log('webSocket %s is connecting!', uid);
     wsObj[uid] = ws;
+    ws.send('connect');
 
     for (let st in wsObj) {
         console.dir(st);
@@ -23,10 +24,8 @@ router.ws('/:uid', function (ws, req) {
             switch (mess.ctrl) {
                 case 'isOn':
                     if (wsObj[toId]) {
-                        console.log('[][]');
                         wsObj[fromId].send('isOnYes');
                     } else {
-                        console.log('--');
                         wsObj[fromId].send('isOnNo');
                     }
                     break;
@@ -38,7 +37,6 @@ router.ws('/:uid', function (ws, req) {
                                 wsObj[toId].send(mess.ctrl);
                                 break;
                             case 'text':
-                                console.log('----');
                                 wsObj[toId].send(JSON.stringify({fromId, ctrl}));
                                 break;
                             default:

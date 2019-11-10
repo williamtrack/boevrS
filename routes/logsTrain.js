@@ -44,7 +44,6 @@ router.get('/getLogsTrain',function (req,res) {
     let childId=req.query.childId;
     let path='./upload/logsTrain/'+childId;
     fs.readFile(path, 'utf-8', function (err, data) {
-        // let logsTrain=JSON.parse(changeToJson(data)).logs;
         if (err) {
             console.log(err);
         } else {
@@ -55,8 +54,13 @@ router.get('/getLogsTrain',function (req,res) {
 });
 
 function changeToJson(str){
-    let tmp=str.substring(0,str.length-1);
+    // let tmp=str.substring(0,str.length-1);
+    // if(tmp[tmp.length-1]!=']'){
+    //     tmp=tmp.substring(0,tmp.length-1);
+    // }
+    let tmp=str.substring(0,str.length-2);
     tmp='{"logs": ['+tmp+']}';
+    // console.log(tmp);
     return tmp;
 }
 
