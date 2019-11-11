@@ -6,8 +6,8 @@ backQuery:查询
 
 const mysql = require('mysql');
 const connection = mysql.createConnection({
-    // host:'39.105.84.194',
-    host: 'localhost',
+    host:'39.105.84.194',
+    // host: 'localhost',
     user: 'will',
     password: 'F234F234',
     port: '3306',

@@ -29,13 +29,11 @@ let storage = multer.diskStorage({
 // 通过 storage 选项来对 上传行为 进行定制化
 const upload = multer({storage: storage});
 function func(req,res,next){
-    console.log(req.query.sessionId);
     sessionId=req.query.sessionId;
     next();
 }
 
 router.post('/upload',func,upload.single('file'), function (req, res) {
-    console.log('yes');
     res.send('success');
 });
 
