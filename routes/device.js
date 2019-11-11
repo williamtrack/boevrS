@@ -5,7 +5,8 @@ router.get('/fetchDeviceSn', function (req, res) {
     sqlQuery.query(sqlCmd).then((response) => {
             res.send(response[0])
         }, () => {
-            console.log('fetchDeviceId errCode 00.')
+            res.end('fail');
+            console.log('fetchDeviceId err.');
         }
     );
 });
@@ -14,10 +15,10 @@ router.get('/releaseDevice', function (req, res) {
     let sqlCmd = "UPDATE users set deviceId = null where binary sessionId= ?";
     let sqlParas = [req.query.sessionId];
     sqlQuery.query(sqlCmd, sqlParas).then((response) => {
-        res.send(response);
+        res.send('success');
     }, () => {
-        res.end();
-        console.log('releaseDevice errCode 00.');
+        res.end('fail');
+        console.log('releaseDevice err.');
     });
 });
 
@@ -31,14 +32,14 @@ router.get('/setDeviceId', function (req, res) {
                 console.log(response01);
                 res.json({
                     exist: true,
-                    double:false,
+                    double: false,
                 });
             }, () => {
                 res.json({
                     exist: true,
-                    double:true,
+                    double: true,
                 });
-                console.log('setDeviceId errCode 01.')
+                console.log('setDeviceId err.')
             });
         } else {
             res.json({
@@ -46,8 +47,8 @@ router.get('/setDeviceId', function (req, res) {
             });
         }
     }, () => {
-        res.end();
-        console.log('setDeviceId errCode 00.');
+        res.end('fail');
+        console.log('setDeviceId err.');
     });
 
 });

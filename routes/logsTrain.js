@@ -41,8 +41,8 @@ router.post('/upload',func,upload.single('file'), function (req, res) {
 
 
 router.get('/getLogsTrain',function (req,res) {
-    let childId=req.query.childId;
-    let path='./upload/logsTrain/'+childId;
+    let sessionId=req.query.sessionId;
+    let path='./upload/logsTrain/'+sessionId;
     fs.readFile(path, 'utf-8', function (err, data) {
         if (err) {
             console.log(err);
