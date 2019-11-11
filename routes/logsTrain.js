@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const fs = require('fs');
 const multer = require('multer');
-let childId=null;
+let sessionId=null;
 
 
 //创建文件夹
@@ -22,15 +22,15 @@ let storage = multer.diskStorage({
     filename: function (req, file, cb) {
         // 将保存文件名设置为 字段名 + 时间戳，比如 logo-1478521468943
         // cb(null, file.fieldname + '-' + Date.now()+'.jpg');
-        cb(null, childId);
+        cb(null, sessionId);
     }
 });
 
 // 通过 storage 选项来对 上传行为 进行定制化
 const upload = multer({storage: storage});
 function func(req,res,next){
-    console.log(req.query.childId);
-    childId=req.query.childId;
+    console.log(req.query.sessionId);
+    sessionId=req.query.sessionId;
     next();
 }
 
