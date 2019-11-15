@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-let expressWs = require('express-ws')(app);
+// let expressWs = require('express-ws')(app);
 
 const createError = require('http-errors');
 const path = require('path');
@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(__dirname + '/public/images'));
 
 //路由
-app.use("/wsStuff", require('./routes/wsStuff'));
+// app.use("/wsServer", require('./routes/wsStuff'));
 app.use('/', require('./routes/index'));
 app.use('/myopia',require('./routes/myopia'));
 app.use('/device',require('./routes/device'));

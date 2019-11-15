@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const wsObj = {};
 
-router.ws('/:uid', function (ws, req) {
+router.ws('/', function (ws, req) {
     const uid = req.params.uid;
     const toId = req.query.toId;
     console.log('webSocket %s is connecting!', uid);

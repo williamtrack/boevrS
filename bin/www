@@ -5,30 +5,48 @@
  */
 
 const app = require('../app');
+const wsServer = require('../wsServer');
+const wssServer = require('../wsServer');
 const debug = require('debug')('boevr:server');
 const http = require('http');
+const https = require('https');
+const fs = require('fs');
+
+// Configure https
+const httpsOption = {
+    key: fs.readFileSync("./https/boevr.cn.key"),
+    cert: fs.readFileSync("./https/boevr.cn.pem")
+};
 
 /**
  * Get port from environment and store in Express.
  */
 
 const port = normalizePort(process.env.PORT || '80');
-app.set('port', port);
+// app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
 const server = http.createServer(app);
+const servers = https.createServer(httpsOption, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 //为了使用express-ws,必须把listen设置再app上，设置在server上会报错
-app.listen(port);
-// server.listen(port);
-// server.on('error', onError);
-// server.on('listening', onListening);
+// app.listen(port);
+
+server.listen(port);
+servers.listen(443);
+
+wsServer({server: server});
+wssServer({server: servers});
+
+
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
