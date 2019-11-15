@@ -10,11 +10,11 @@ module.exports = function (e) {
         if (pathname != '/wsServer'||!fromId||!toId) {
             ws.close();
         }
-        console.log('webSocket %s is connecting!', fromId);
+        // console.log('webSocket %s is connecting!', fromId);
         wsObj[fromId] = ws;
-        for (let st in wsObj) {
-            console.dir(st);
-        }
+        // for (let st in wsObj) {
+        //     console.dir(st);
+        // }
         ws.send('connect');
         if (fromId != toId && wsObj[toId]) {
             ws.send('isOnYes');
@@ -38,7 +38,7 @@ module.exports = function (e) {
             }
         });
         ws.on('close', function close() {
-            console.log('webSocket ' + fromId + ' is closed!');
+            // console.log('webSocket ' + fromId + ' is closed!');
             if (wsObj[toId]) {
                 wsObj[toId].send('isOnNo');
             }
