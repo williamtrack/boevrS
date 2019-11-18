@@ -20,14 +20,18 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(__dirname + '/public/images'));
 
 //路由
-app.use('/', require('./routes/index'));
-app.use('/myopia',require('./routes/myopia'));
-app.use('/device',require('./routes/device'));
-app.use('/children',require('./routes/children'));
-app.use('/user',require('./routes/user'));
-app.use('/test',require('./routes/test'));
-app.use('/ctrl',require('./routes/ctrl'));
-app.use('/logsTrain',require('./routes/logsTrain'));
+app.use('/', function (req, res, next) {
+    if (req.url == '/') return res.redirect(301, 'https://boevr.cn/index');
+    next();
+});
+app.use('/index', require('./routes/index'));
+app.use('/myopia', require('./routes/myopia'));
+app.use('/device', require('./routes/device'));
+app.use('/children', require('./routes/children'));
+app.use('/user', require('./routes/user'));
+app.use('/test', require('./routes/test'));
+app.use('/ctrl', require('./routes/ctrl'));
+app.use('/logsTrain', require('./routes/logsTrain'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -7,7 +7,7 @@
 const app = require('../app');
 const wsServer = require('../wsServer');
 const wssServer = require('../wsServer');
-const debug = require('debug')('boevr:server');
+const debug = require('debug')('boevrS:server');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
@@ -22,31 +22,37 @@ const httpsOption = {
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '80');
-// app.set('port', port);
+const port = normalizePort(process.env.PORT || 80);
+const ports = normalizePort(443);
 
 /**
  * Create HTTP server.
  */
-
 const server = http.createServer(app);
+// const server = http.createServer();
 const servers = https.createServer(httpsOption, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-//为了使用express-ws,必须把listen设置再app上，设置在server上会报错
-// app.listen(port);
-
 server.listen(port);
-servers.listen(443);
+servers.listen(ports);
 
 wsServer({server: server});
 wssServer({server: servers});
 
-
-server.on('error', onError);
-server.on('listening', onListening);
+// server.on('request', function (req, res) {
+//     // console.log(req);
+//     const url = req.url;
+//     if (url === '/') {
+//         res.writeHead(301, {
+//             'Location': 'https://boevr.cn' + url
+//         });
+//     }
+//     res.end();
+// });
+servers.on('error', onError);
+servers.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -54,17 +60,14 @@ server.on('listening', onListening);
 
 function normalizePort(val) {
     let port = parseInt(val, 10);
-
     if (isNaN(port)) {
         // named pipe
         return val;
     }
-
     if (port >= 0) {
         // port number
         return port;
     }
-
     return false;
 }
 
@@ -76,11 +79,9 @@ function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
-
     let bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
-
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
@@ -102,8 +103,6 @@ function onError(error) {
 
 function onListening() {
     let addr = server.address();
-    let bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'port ' + addr.port;
+    let bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     debug('Listening on ' + bind);
 }
