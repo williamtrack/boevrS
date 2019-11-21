@@ -96,7 +96,7 @@ const formatNumber = n => {
 let snToChildId = (sn) => {
     return new Promise(
         function (resolve, reject) {
-            let sqlCmd = 'select id from devices where sn=' + sn;
+            let sqlCmd = 'select id from devices where sn=' + "'"+sn+"'";
             sqlQuery.query(sqlCmd).then((e) => {
                 let sqlCmd = 'select defaultChildId from users where deviceId =' + e[0].id;
                 sqlQuery.query(sqlCmd).then((e) => {
