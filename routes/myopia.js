@@ -98,6 +98,11 @@ let snToChildId = (sn) => {
         function (resolve, reject) {
             let sqlCmd = 'select id from devices where sn=' + "'"+sn+"'";
             sqlQuery.query(sqlCmd).then((e) => {
+                if(!e[0]){
+                    reject();
+                    console.log('snToChildId err');
+                    return;
+                }
                 let sqlCmd = 'select defaultChildId from users where deviceId =' + e[0].id;
                 sqlQuery.query(sqlCmd).then((e) => {
                     console.log(e);
@@ -105,6 +110,7 @@ let snToChildId = (sn) => {
                         resolve(e[0].defaultChildId);
                     }else{
                         reject();
+                        console.log('snToChildId err');
                     }
                 }, () => {
                     reject();
