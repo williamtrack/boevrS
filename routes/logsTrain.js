@@ -38,9 +38,17 @@ router.post('/upload',func,upload.single('file'), function (req, res) {
 });
 
 router.post('/uploadLogs',func,function (req, res) {
+    // let path='./upload/logsTrain/'+sessionId;
+    // let body=JSON.stringify(req.body)+",";
+    // fs.appendFileSync(path, body);
+    // res.send('success');
+
     let path='./upload/logsTrain/'+sessionId;
-    let body=JSON.stringify(req.body)+",";
-    fs.appendFileSync(path, body);
+    // console.log(req.body.logs);
+    let logs=req.body.logs;
+    logs=logs+",";
+    //let body=JSON.stringify(req.body)+",";
+    fs.appendFileSync(path, logs);
     res.send('success');
 });
 
@@ -63,7 +71,7 @@ function changeToJson(str){
     // if(tmp[tmp.length-1]!=']'){
     //     tmp=tmp.substring(0,tmp.length-1);
     // }
-    let tmp=str.substring(0,str.length-2);
+    let tmp=str.substring(0,str.length-1);
     tmp='{"logs": ['+tmp+']}';
     // console.log(tmp);
     return tmp;

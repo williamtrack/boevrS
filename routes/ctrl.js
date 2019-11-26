@@ -34,7 +34,8 @@ function func(req,res,next){
 }
 
 router.post('/upload',func,upload.single('file'), function (req, res) {
-    console.log('yes');
+    let a=sn+"master";
+    global.wsCtrl[a].send('picReady');
     res.send('success');
 });
 

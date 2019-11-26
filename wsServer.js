@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const url = require('url');
-let wsCtrl = {};
+global.wsCtrl = {};
 let wsVR = {};
 function noop() {}
 function heartbeat() {
