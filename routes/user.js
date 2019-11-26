@@ -8,10 +8,19 @@ router.get('/checkLogin', function (req, res, next) {
             //返回sessions对应的users记录
             let sqlCmd = "select * from users where binary sessionId=" + "'" + response[0].id + "'";
             sqlQuery.query(sqlCmd).then((response01) => {
-                res.json({
-                    is_login: true,
-                    users: response01[0],
-                });
+                if (!response01[0].defaultChildId) {
+                    res.json({
+                        is_login: true,
+                        is_first: true,
+                        users: response01[0],
+                    });
+                } else {
+                    res.json({
+                        is_login: true,
+                        is_first: false,
+                        users: response01[0],
+                    });
+                }
             }, () => {
                 console.log('checkLogin errCode 01.')
             });
@@ -61,15 +70,21 @@ router.post('/login', function (req, res, next) {
                         //更新数据库中openid对应的token
                         sqlQuery.query(sqlCmd, sqlParams).then(() => {
                             //返回sessions对应的users记录
-                            //******如果没有users？？？？
                             let sqlCmd = "select * from users where binary sessionId=" + "'" + sessionId + "'";
                             sqlQuery.query(sqlCmd).then((response03) => {
-                                res.json({
-                                    is_reg: true,
-                                    is_first: false,
-                                    token: tokenNew,
-                                    users: response03[0],
-                                });
+                                if (!response03[0].defaultChildId) {
+                                    res.json({
+                                        is_first: true,
+                                        token: tokenNew,
+                                        users: response03[0],
+                                    });
+                                } else {
+                                    res.json({
+                                        is_first: false,
+                                        token: tokenNew,
+                                        users: response03[0],
+                                    });
+                                }
                             }, () => {
                                 console.log('login errCode 06.')
                             });
@@ -78,10 +93,11 @@ router.post('/login', function (req, res, next) {
                             console.log('login errCode 05');
                         })
                     } else {
-                        //未登录到数据库
+                        //未登录到数据库，添加session
                         let sqlCmd = 'INSERT INTO sessions(id,openid,sessionKey,token) VALUES(0,?,?,?)';
                         let sqlParams = [session.openid, session.sessionkey, session.token];
                         sqlQuery.query(sqlCmd, sqlParams).then((response03) => {
+                            //添加users
                             let sqlCmd = 'insert into users(id,sessionId) values(0,?)';
                             let sqlParams = [response03.insertId];
                             sqlQuery.query(sqlCmd, sqlParams).then((response04) => {
@@ -93,7 +109,6 @@ router.post('/login', function (req, res, next) {
                                     userName: null,
                                 };
                                 res.json({
-                                    is_reg: true,
                                     is_first: true,
                                     token: tokenNew,
                                     users: users,
@@ -121,12 +136,19 @@ router.post('/login', function (req, res, next) {
 
 router.get('/setDefaultChild', function (req, res, next) {
     let sqlCmd = "UPDATE users set defaultChildId = ? where binary sessionId= ?";
-    let sqlParas =[req.query.defaultChildId, req.query.sessionId];
-    sqlQuery.query(sqlCmd,sqlParas).then((response) => {
-        res.send(response);
+    let sqlParas = [req.query.defaultChildId, req.query.sessionId];
+    sqlQuery.query(sqlCmd, sqlParas).then((response) => {
+        //发送child信息
+        let sqlCmd = "select * from children where id = " + req.query.defaultChildId;
+        sqlQuery.query(sqlCmd, sqlParas).then((res01) => {
+            res.send(res01[0]);
+        }, () => {
+            res.end();
+            console.log('setDefaultChild err');
+        });
     }, () => {
         res.end();
-        console.log('setDefaultChild errCode 00.');
+        console.log('setDefaultChild err');
     });
 });
 

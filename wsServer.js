@@ -41,8 +41,8 @@ module.exports = function (e) {
                 ws.send('isOnYes');
             }
             ws.on('message', function incoming(msg) {
+                // console.log(msg);
                 if (fromId != toId && wsVR[toId]) {
-                    // console.log(msg);
                     switch (msg) {
                         case 'getPic':
                             wsVR[toId].send(msg);
@@ -72,8 +72,8 @@ module.exports = function (e) {
                 wsCtrl[toId].send('isOnYes');
             }
             ws.on('message', function incoming(msg) {
+                // console.log(msg);
                 if (fromId != toId && wsCtrl[toId]) {
-                    // console.log(msg);
                     wsCtrl[toId].send(msg);
                 }
             });

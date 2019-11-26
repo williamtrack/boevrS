@@ -28,8 +28,7 @@ router.get('/setDeviceId', function (req, res) {
         if (response[0]) {
             let sqlCmd2 = "UPDATE users set deviceId = ? where binary sessionId= ?";
             let sqlParas = [response[0].id, req.query.sessionId];
-            sqlQuery.query(sqlCmd2, sqlParas).then((response01) => {
-                console.log(response01);
+            sqlQuery.query(sqlCmd2, sqlParas).then(() => {
                 res.json({
                     exist: true,
                     double: false,

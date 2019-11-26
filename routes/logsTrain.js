@@ -37,6 +37,13 @@ router.post('/upload',func,upload.single('file'), function (req, res) {
     res.send('success');
 });
 
+router.post('/uploadLogs',func,function (req, res) {
+    let path='./upload/logsTrain/'+sessionId;
+    let body=JSON.stringify(req.body)+",";
+    fs.appendFileSync(path, body);
+    res.send('success');
+});
+
 
 router.get('/getLogsTrain',function (req,res) {
     let sessionId=req.query.sessionId;
