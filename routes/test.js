@@ -6,8 +6,9 @@ const fs = require('fs');
 
 
 router.get('/test',function (req,res) {
-    let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
-    res.send(form);
+    // let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
+    // res.send(form);
+    res.end('success');
 });
 
 router.get('/test01',function (req,res) {

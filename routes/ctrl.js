@@ -43,7 +43,7 @@ router.post('/upload',func,upload.single('file'), function (req, res) {
 router.get('/getPic', function (req, res) {
     res.writeHead(200,{'Content-Type':'image/jpg'});
     let picName=req.query.sn;
-    let pic = fs.readFileSync('./upload/pic/'+picName+'.png');
+    let pic = fs.readFileSync('./upload/pic/'+picName);
     res.write(pic);
     res.end();
 });

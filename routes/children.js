@@ -49,11 +49,36 @@ router.get('/fetchChild', function (req, res) {
     let intId = parseInt(req.query.id);
     let sqlCmd = "select * from children where id=" + "'" + intId + "'";
     sqlQuery.query(sqlCmd).then((response) => {
-        res.send(response);
+        //检查连续训练天数，如果不连续，keepOn则置为0
+        let dt=response[0].uploadDate;
+        let date = [dt.getFullYear(), dt.getMonth() + 1, dt.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');
+        let currentDate = new Date();
+        let currentDateF = [currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');;
+        // console.log(currentDateF,date);
+
+        if(dateInterval(dt, currentDateF) > 1){
+            let keepOn=0;
+            let sqlCmd='update children set keepOn=? where id=?';
+            let sqlParams = [keepOn,req.query.id];
+            sqlQuery.query(sqlCmd,sqlParams).then((e) => {
+                response[0].keepOn=0;
+                res.send(response);
+            });
+        }else {
+            res.send(response);
+        }
     }, () => {
         console.log('fetchChild err.');
         res.send('err');
     });
 });
+
+function dateInterval(date1, date2) {
+    let sDate = new Date(date1);
+    let now = new Date(date2);
+    let days = now.getTime() - sDate.getTime();
+    let day = parseInt(days / (1000 * 60 * 60 * 24));
+    return day;
+}
 
 module.exports = router;
