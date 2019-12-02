@@ -6,22 +6,19 @@ const fs = require('fs');
 
 
 router.get('/test',function (req,res) {
-    // let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
-    // res.send(form);
-    res.end('success');
+    let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
+    res.send(form);
+    // res.end('success');
 });
 
 router.get('/test01',function (req,res) {
-    fs.readFile('./upload/logsTrain/0001.json', 'utf-8', function (err, data) {
-        // console.log(JSON.parse(data).logs[1].TestName);
-        let history=changeToJson(data);
-        console.log(JSON.parse(history).logs[0]);
+    fs.readFile('./res/images/1.jpg',function (err, data) {
+        // console.log(data);
         if (err) {
             console.log(err);
         } else {
-            res.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});
-            //res.end(data);
-            res.end(data);
+            // res.writeHead(200,{'Content-Type':'image/jpeg'});
+            res.send(data);
         }
     });
 });
@@ -82,9 +79,3 @@ router.post('/uploads',function (req,res,next) {
         }
     });
 });
-
-function changeToJson(str){
-    let tmp=str.substring(0,str.length-1);
-    tmp='{"logs": ['+tmp+']}';
-    return tmp;
-}

@@ -51,8 +51,14 @@ wssServer({server: servers});
 //     }
 //     res.end();
 // });
+server.on('error', onError);
 servers.on('error', onError);
-servers.on('listening', onListening);
+server.on('listening', function () {
+    onListening(server);
+});
+servers.on('listening', function () {
+    onListening(servers);
+});
 
 /**
  * Normalize a port into a number, string, or false.
@@ -76,6 +82,7 @@ function normalizePort(val) {
  */
 
 function onError(error) {
+    console.log('--err--');
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -101,7 +108,7 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+function onListening(server) {
     let addr = server.address();
     let bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     debug('Listening on ' + bind);

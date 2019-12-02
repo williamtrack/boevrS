@@ -2,7 +2,10 @@ const WebSocket = require('ws');
 const url = require('url');
 global.wsCtrl = {};
 let wsVR = {};
-function noop() {}
+
+function noop() {
+}
+
 function heartbeat() {
     this.isAlive = true;
 }
@@ -12,7 +15,6 @@ module.exports = function (e) {
 
     const interval = setInterval(function ping() {
         ws.clients.forEach(function each(ws) {
-            // console.log(ws.isAlive);
             if (ws.isAlive === false) return ws.terminate();
             ws.isAlive = false;
             ws.ping(noop);
@@ -20,18 +22,17 @@ module.exports = function (e) {
     }, 5000);
 
     ws.on('connection', function connection(ws, req) {
-
         const pathname = url.parse(req.url, true).pathname;
         const fromId = url.parse(req.url, true).query.fromId;
         const toId = url.parse(req.url, true).query.toId;
         if (pathname != '/wsServer' && pathname != '/wsCtrl' || !fromId || !toId) {
             ws.close();
         }
-        // console.log('webSocket %s is connecting!', fromId);
+        console.log('\x1B[34mWS \x1B[39m%s is on!', fromId);
         // for (let st in wsCtrl) {
         //     console.dir(st);
         // }
-        if(pathname==='/wsCtrl'){
+        if (pathname === '/wsCtrl') {
             ws.isAlive = true;
             ws.on('pong', heartbeat);
 
@@ -53,17 +54,17 @@ module.exports = function (e) {
                     }
                 }
             });
-            ws.on('error',function () {
+            ws.on('error', function () {
                 console.log('error')
             });
             ws.on('close', function close() {
-                // console.log('webSocket ' + fromId + ' is closed!');
+                console.log('\x1B[34mWS \x1B[39m%s is closed!_____%s', fromId, getDate());
                 delete (wsCtrl[fromId]);
             });
         }
 
 
-        if(pathname==='/wsServer'){
+        if (pathname === '/wsServer') {
             ws.isAlive = true;
             ws.on('pong', heartbeat);
 
@@ -79,7 +80,7 @@ module.exports = function (e) {
             });
 
             ws.on('close', function close() {
-                // console.log('webSocket ' + fromId + ' is closed!');
+                console.log('\x1B[34mWS \x1B[39m%s is closed!_____%s', fromId, getDate());
                 if (wsCtrl[toId]) {
                     wsCtrl[toId].send('isOnNo');
                 }

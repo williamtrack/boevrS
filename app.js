@@ -18,11 +18,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(__dirname + '/public/images'));
 
-morgan.token('localDate',function getDate(req) {
-    let date = new Date();
-    return date.toLocaleString()
-});
-app.use(morgan('\x1B[34m:status \x1B[39m::remote-addr :method :url :res[content-length] \x1B[36m:response-time ms \x1B[39m:localDate'));
+// morgan.token('localDate',function(req) {
+//     return;
+// });
+app.use(morgan('\x1B[34m:status \x1B[39m::remote-addr :method :url \x1B[36m:res[content-length]b \x1B[39m:response-time ms'));
 
 //路由
 app.use('/', function (req, res, next) {
