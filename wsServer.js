@@ -28,7 +28,7 @@ module.exports = function (e) {
         if (pathname != '/wsServer' && pathname != '/wsCtrl' || !fromId || !toId) {
             ws.close();
         }
-        console.log('\x1B[34mWS \x1B[39m%s is on!', fromId);
+        console.log('\x1B[34mWSS \x1B[39m%s is open!', fromId);
         // for (let st in wsCtrl) {
         //     console.dir(st);
         // }
@@ -58,7 +58,7 @@ module.exports = function (e) {
                 console.log('error')
             });
             ws.on('close', function close() {
-                console.log('\x1B[34mWS \x1B[39m%s is closed!_____%s', fromId, getDate());
+                console.log('\x1B[34mWSS \x1B[39m%s is closed!', fromId);
                 delete (wsCtrl[fromId]);
             });
         }
@@ -80,7 +80,7 @@ module.exports = function (e) {
             });
 
             ws.on('close', function close() {
-                console.log('\x1B[34mWS \x1B[39m%s is closed!_____%s', fromId, getDate());
+                console.log('\x1B[34mWSS \x1B[39m%s is closed!', fromId);
                 if (wsCtrl[toId]) {
                     wsCtrl[toId].send('isOnNo');
                 }

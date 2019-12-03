@@ -21,7 +21,7 @@ app.use(express.static(__dirname + '/public/images'));
 // morgan.token('localDate',function(req) {
 //     return;
 // });
-app.use(morgan('\x1B[34m:status \x1B[39m::remote-addr :method :url \x1B[36m:res[content-length]b \x1B[39m:response-time ms'));
+app.use(morgan('\x1B[34m:status \x1B[39m::remote-addr :method :url \x1B[36m:res[content-length]B \x1B[39m:response-time ms'));
 
 //路由
 app.use('/', function (req, res, next) {
