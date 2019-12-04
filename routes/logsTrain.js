@@ -111,10 +111,6 @@ const formatNumber = n => {
 };
 
 function changeToJson(str) {
-    // let tmp=str.substring(0,str.length-1);
-    // if(tmp[tmp.length-1]!=']'){
-    //     tmp=tmp.substring(0,tmp.length-1);
-    // }
     let tmp = str.substring(0, str.length - 2);
     tmp = '{"logs": [' + tmp + ']}';
     // console.log(tmp);
