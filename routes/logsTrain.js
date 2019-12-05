@@ -95,7 +95,7 @@ router.post('/uploadLogs', func, function (req, res) {
 router.get('/getLogsTrain', function (req, res) {
     let sessionId = req.query.sessionId;
     let path = './upload/logsTrain/' + sessionId;
-
+    //判断文件是否存在
     let isFileExisted = function (filePath) {
         return new Promise(function (resolve, reject) {
             fs.access(filePath, (err) => {
@@ -108,18 +108,19 @@ router.get('/getLogsTrain', function (req, res) {
         })
     };
     isFileExisted(path).then((e) => {
-        console.log(e);
+        // console.log(e);
         fs.readFile(path, 'utf-8', function (err, data) {
             if (err) {
                 console.log(err);
             } else {
+                // console.log('existed');
                 res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
                 res.end(changeToJson(data));
             }
         });
     }, (e) => {
-        console.log(e);
-        res.end();
+        // console.log('notExisted');
+        res.end('notExisted');
     });
 
 });

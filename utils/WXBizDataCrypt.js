@@ -9,14 +9,14 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
   const buf1 = Buffer.from('507c780aa28a5484bec695e4bbb29809','base64');
   console.log(buf1.toString('base64'));
 
-
+  console.log(iv);
   // base64 decode
   // console.log(this.sessionKey)
   // console.log(encryptedData)
   var sessionKey = Buffer.from(this.sessionKey, 'base64')
   encryptedData = Buffer.from(encryptedData, 'base64')
   iv = Buffer.from(iv, 'base64')
-  console.log(iv)
+  console.log(iv);
 
   try {
      // 解密
