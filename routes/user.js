@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const request = require('request');
-const crypto = require('crypto');
-const WXBizDataCrypt = require('../utils/WXBizDataCrypt');
+// const crypto = require('crypto');
+// const WXBizDataCrypt = require('../utils/WXBizDataCrypt');
+
 const wx = {
     appid: 'wx2096a9d342339ba9',
     secret: '507c780aa28a5484bec695e4bbb29809'
@@ -155,20 +156,20 @@ router.get('/setDefaultChild', function (req, res, next) {
     });
 });
 
-router.post('/encryptedData', (req, res) => {
-    let pc = new WXBizDataCrypt(wx.appid, '35miFU2AMKxh3hrM0tAesw==');
-    // console.log(req.body);
-    // console.log(req.body.encryptedData);
-    let data = pc.decryptData(req.body.encryptedData, req.body.iv);
-    console.log('解密后', data);
-    // //校验rawData是否正确
-    // let sha1 = crypto.createHash('sha1');
-    // sha1.update(req.body.rawData + wx.secret);
-    // let signature2 = sha1.digest('hex');
-    // console.log(signature2);
-    // console.log(req.body.signature);
-    // res.json({pass: signature2 == req.body.signature});
-    res.end();
-});
+// router.post('/encryptedData', (req, res) => {
+//     let pc = new WXBizDataCrypt(wx.appid, '35miFU2AMKxh3hrM0tAesw==');
+//     // console.log(req.body);
+//     // console.log(req.body.encryptedData);
+//     let data = pc.decryptData(req.body.encryptedData, req.body.iv);
+//     console.log('解密后', data);
+//     //校验rawData是否正确
+//     let sha1 = crypto.createHash('sha1');
+//     sha1.update(req.body.rawData + wx.secret);
+//     let signature2 = sha1.digest('hex');
+//     console.log(signature2);
+//     console.log(req.body.signature);
+//     res.json({pass: signature2 == req.body.signature});
+//     res.end();
+// });
 
 module.exports = router;
