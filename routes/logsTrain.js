@@ -95,14 +95,33 @@ router.post('/uploadLogs', func, function (req, res) {
 router.get('/getLogsTrain', function (req, res) {
     let sessionId = req.query.sessionId;
     let path = './upload/logsTrain/' + sessionId;
-    fs.readFile(path, 'utf-8', function (err, data) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
-            res.end(changeToJson(data));
-        }
+
+    let isFileExisted = function (filePath) {
+        return new Promise(function (resolve, reject) {
+            fs.access(filePath, (err) => {
+                if (err) {
+                    reject('err');
+                } else {
+                    resolve('existed');
+                }
+            })
+        })
+    };
+    isFileExisted(path).then((e) => {
+        console.log(e);
+        fs.readFile(path, 'utf-8', function (err, data) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
+                res.end(changeToJson(data));
+            }
+        });
+    }, (e) => {
+        console.log(e);
+        res.end();
     });
+
 });
 
 const formatNumber = n => {
