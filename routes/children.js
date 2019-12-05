@@ -53,10 +53,10 @@ router.get('/fetchChild', function (req, res) {
         let dt=response[0].uploadDate;
         let date = [dt.getFullYear(), dt.getMonth() + 1, dt.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');
         let currentDate = new Date();
-        let currentDateF = [currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');;
+        let currentDateF = [currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');
         // console.log(currentDateF,date);
 
-        if(dateInterval(dt, currentDateF) > 1){
+        if(dateInterval(date, currentDateF) > 1){
             let keepOn=0;
             let sqlCmd='update children set keepOn=? where id=?';
             let sqlParams = [keepOn,req.query.id];

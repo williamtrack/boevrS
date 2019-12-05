@@ -57,11 +57,11 @@ router.post('/uploadLogs', func, function (req, res) {
         let keepOn = e[0].keepOn;
         //下面方法为系统时区，东八区
         let date = [dt.getFullYear(), dt.getMonth() + 1, dt.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');
-
+        let interval = dateInterval(date, currentDateF);
         // console.log(date, currentDateF);
         // console.log(dateInterval(date, currentDateF));
 
-        if (dateInterval(dt, currentDateF) === 1) {
+        if (interval === 1) {
             keepOn++;
             let sqlCmd = 'update children set uploadDate=?,keepOn=? where binary id = ?';
             let sqlParams = [currentDateF, keepOn, ID];
@@ -72,6 +72,8 @@ router.post('/uploadLogs', func, function (req, res) {
                 console.log('uploadLogs err.');
             });
 
+        } else if (interval === 0) {
+            res.send('success');
         } else {
             keepOn = 1;
             let sqlCmd = 'update children set uploadDate=?,keepOn=? where binary id = ?';
@@ -83,8 +85,6 @@ router.post('/uploadLogs', func, function (req, res) {
                 console.log('uploadLogs err.');
             });
         }
-
-        // res.send('success');
     }, (err) => {
         res.end('err');
         console.log('uploadLogs err.');

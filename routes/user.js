@@ -53,6 +53,7 @@ router.post('/login', function (req, res, next) {
             console.log('login errCode 00');
         } else {
             let sessionGet = JSON.parse(body);//如果直接=body，则不能解析
+            console.log(sessionGet);
             if (sessionGet.openid) {
                 let tokenNew = 'token_' + new Date().getTime();
                 session.token = tokenNew;
