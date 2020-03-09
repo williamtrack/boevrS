@@ -5,14 +5,14 @@ const multer = require('multer');
 const fs = require('fs');
 
 
-router.get('/test',function (req,res) {
+router.get('/uploadFile',function (req,res) {
     let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
     res.send(form);
     // res.end('success');
 });
 
 router.get('/test01',function (req,res) {
-    fs.readFile('./res/images/1.jpg',function (err, data) {
+    fs.readFile('./public/video.mp4',function (err, data) {
         // console.log(data);
         if (err) {
             console.log(err);
@@ -51,9 +51,11 @@ const upload = multer({storage: storage});
 const uploads = multer({storage: storage}).array('file');
 
 router.post('/upload', upload.single('file'), function (req, res) {
+    console.log("123");
     res.send('successfully upload!');
 });
 
+// Multipart/form-data
 router.post('/uploads',function (req,res,next) {
     uploads(req, res, function (err) {
         if (err) {

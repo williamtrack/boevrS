@@ -34,23 +34,26 @@ function func(req, res, next) {
     next();
 }
 
+//上传文件，目前已弃用
 router.post('/upload', func, upload.single('file'), function (req, res) {
     res.send('success');
 });
 
+//post上传字符串
 router.post('/uploadLogs', func, function (req, res) {
     let path = './upload/logsTrain/' + sessionId;
     // console.log(req.body.logs);
     let logs = req.body.logs;
-    let ID = parseInt(JSON.parse(logs).ID);
-
     let logsF = logs + ",\n";
+    let ID = parseInt(JSON.parse(logs).ID);
+    //添加训练记录到文件，同步写文件
     fs.appendFileSync(path, logsF);
 
     //获取当前时间
     let currentDate = new Date();
     let currentDateF = [currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()].map(formatNumber).join('-');
 
+    //关于日期的一些数据库操作
     let sqlCmd = 'select uploadDate,keepOn from children where binary id =' + JSON.parse(logs).ID;
     sqlQuery.query(sqlCmd).then((e) => {
         let dt = e[0].uploadDate;

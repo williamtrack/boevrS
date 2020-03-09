@@ -1,9 +1,15 @@
 # IntelliJ project files
 .idea
 node_modules
-upload
-public/*
 
+public/*
+!public/.gitignore
+!public/images
+
+upload/*
+!upload/app
+upload/app/*
+!upload/app/version.json
 
 # Windows
 [Dd]esktop.ini
