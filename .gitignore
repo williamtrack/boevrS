@@ -9,7 +9,7 @@ public/*
 upload/*
 !upload/app
 upload/app/*
-!upload/app/version.json
+!upload/app/version
 
 # Windows
 [Dd]esktop.ini

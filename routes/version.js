@@ -58,7 +58,8 @@ router.get('/getAppInfo', function (req, res) {
                 //json to string
                 let abc=JSON.stringify(lastVersion);
                 // console.log(abc);
-                // res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
+                //如果不指定utf-8,则会导致返回中文有问题
+                res.writeHead(200, {'Content-Type': 'text/plain;charset=utf-8'});
                 res.end(abc);
             }
         });

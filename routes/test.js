@@ -5,22 +5,24 @@ const multer = require('multer');
 const fs = require('fs');
 
 
+router.get('/test',function (req,res) {
+    fs.readFile('./public/test.txt',function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            //文本必须要编码utf-8，否则不能识别中文；mp4格式会自动下载，而不是网页播放
+            res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'});
+            // res.writeHead(200,{'Content-Type':'image/jpg'});
+            res.end(data);
+        }
+    });
+});
+
+//发送上传html界面
 router.get('/uploadFile',function (req,res) {
     let form = fs.readFileSync('./res/1.html', {encoding: 'utf8'});
     res.send(form);
     // res.end('success');
-});
-
-router.get('/test01',function (req,res) {
-    fs.readFile('./public/video.mp4',function (err, data) {
-        // console.log(data);
-        if (err) {
-            console.log(err);
-        } else {
-            // res.writeHead(200,{'Content-Type':'image/jpeg'});
-            res.send(data);
-        }
-    });
 });
 
 //创建文件夹
@@ -50,8 +52,8 @@ let storage = multer.diskStorage({
 const upload = multer({storage: storage});
 const uploads = multer({storage: storage}).array('file');
 
+// Multipart/form-data
 router.post('/upload', upload.single('file'), function (req, res) {
-    console.log("123");
     res.send('successfully upload!');
 });
 
