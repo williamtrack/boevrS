@@ -27,7 +27,7 @@ let storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 function func(req, res, next) {
-    childId = req.body.childId;
+    childId = req.body;
     console.log(childId);
     next();
 }
