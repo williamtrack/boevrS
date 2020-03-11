@@ -5,7 +5,7 @@ const fs = require('fs');
 
 let childId = null;
 //创建文件夹
-let uploadFolder = __dirname + '/../upload/pic';
+let uploadFolder = __dirname + '/../upload/img';
 let createFolder = function (folder) {
     try {
         fs.accessSync(folder);
@@ -27,12 +27,47 @@ let storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 function func(req, res, next) {
-    console.log(req);
     console.log(req.query.childId);
-    childId = req.query.childId;
+    console.log(req.body.childId);
     next();
 }
-router.post('/uploadPic', func, upload.single('file'), function (req, res) {
+
+router.post('/uploadImg', func, upload.single('file'), function (req, res) {
+    console.log(req.query.childId);
+    console.log("abc");
+    res.send('success');
+});
+
+router.get('/downloadImg', function (req, res) {
+    let mchildId = req.query.childId;
+    let path = './upload/img/' + mchildId;
+    //判断文件是否存在
+    let isFileExisted = function (filePath) {
+        return new Promise(function (resolve, reject) {
+            fs.access(filePath, (err) => {
+                if (err) {
+                    reject('err');
+                } else {
+                    resolve('existed');
+                }
+            })
+        })
+    };
+    isFileExisted(path).then((e) => {
+        // console.log(e);
+        fs.readFile(path,'' , function (err, data) {
+            if (err) {
+                console.log(err);
+            } else {
+                // console.log('existed');
+                // res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
+                res.end(data);
+            }
+        });
+    }, (e) => {
+        // console.log('notExisted');
+        res.end('notExisted');
+    });
     console.log("abc");
     res.send('success');
 });
@@ -40,7 +75,7 @@ router.post('/uploadPic', func, upload.single('file'), function (req, res) {
 
 router.post('/addChild', function (req, res) {
     let sqlCmd = 'INSERT INTO children(id,sessionId,childName,age,gender,leftEye,rightEye,myopia) VALUES(0,?,?,?,?,?,?,?)';
-    let sqlParams = [req.body.sessionId, req.body.childName, req.body.age, req.body.gender, req.body.leftEye, req.body.rightEye,req.body.myopia];
+    let sqlParams = [req.body.sessionId, req.body.childName, req.body.age, req.body.gender, req.body.leftEye, req.body.rightEye, req.body.myopia];
     // console.log(sqlCmd,sqlParams);
     sqlQuery.query(sqlCmd, sqlParams).then((r) => {
         res.send(r);
@@ -64,17 +99,17 @@ router.get('/delChild', function (req, res) {
 
 router.post('/updateChild', function (req, res) {
     let sqlCmd = 'update children set sessionId =?,childName=?,age=?,gender=?,leftEye=?,rightEye=?,myopia=? where binary id = ?';
-    let sqlParams = [req.body.sessionId, req.body.childName, req.body.age, req.body.gender, req.body.leftEye, req.body.rightEye,req.body.myopia,req.body.id];
+    let sqlParams = [req.body.sessionId, req.body.childName, req.body.age, req.body.gender, req.body.leftEye, req.body.rightEye, req.body.myopia, req.body.id];
     sqlQuery.query(sqlCmd, sqlParams).then((response) => {
         res.send(response);
     }, (err) => {
         res.end();
-        console.log(err,'updateChild err.');
+        console.log(err, 'updateChild err.');
     });
 });
 
 router.get('/fetchAllChildren', function (req, res) {
-    let sqlCmd = "select * from children where binary sessionId="+"'"+req.query.sessionId+"'";
+    let sqlCmd = "select * from children where binary sessionId=" + "'" + req.query.sessionId + "'";
     sqlQuery.query(sqlCmd).then((response) => {
         res.send(response);
     }, () => {
@@ -88,21 +123,21 @@ router.get('/fetchChild', function (req, res) {
     let sqlCmd = "select * from children where id=" + "'" + intId + "'";
     sqlQuery.query(sqlCmd).then((response) => {
         //检查连续训练天数，如果不连续，keepOn则置为0
-        let dt=response[0].uploadDate;
+        let dt = response[0].uploadDate;
         let date = [dt.getFullYear(), dt.getMonth() + 1, dt.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');
         let currentDate = new Date();
         let currentDateF = [currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()].join('-').replace(/(?=\b\d\b)/g, '0');
         // console.log(currentDateF,date);
 
-        if(dateInterval(date, currentDateF) > 1){
-            let keepOn=0;
-            let sqlCmd='update children set keepOn=? where id=?';
-            let sqlParams = [keepOn,req.query.id];
-            sqlQuery.query(sqlCmd,sqlParams).then((e) => {
-                response[0].keepOn=0;
+        if (dateInterval(date, currentDateF) > 1) {
+            let keepOn = 0;
+            let sqlCmd = 'update children set keepOn=? where id=?';
+            let sqlParams = [keepOn, req.query.id];
+            sqlQuery.query(sqlCmd, sqlParams).then((e) => {
+                response[0].keepOn = 0;
                 res.send(response);
             });
-        }else {
+        } else {
             res.send(response);
         }
     }, () => {
