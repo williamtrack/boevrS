@@ -29,8 +29,6 @@ const upload = multer({storage: storage});
 function func(req, res, next) {
     childId=req.query.childId;
     console.log(childId);
-    console.log(req.body)
-    console.log(req.data)
     next();
 }
 
@@ -60,12 +58,13 @@ router.get('/downloadImg', function (req, res) {
                 console.log(err);
             } else {
                 console.log('existed');
-                // res.writeHead(200, {'Content-Type': 'application/json;charset=utf-8'});
+                res.writeHead(200, {'Content-Type': ''});
                 res.end(data);
             }
         });
     }, (e) => {
         console.log(e);
+        res.writeHead(404, {'Content-Type': ''});
         res.end('notExisted');
     });
 });
