@@ -28,6 +28,7 @@ const upload = multer({storage: storage});
 
 function func(req, res, next) {
     childId = req.body.childId;
+    console.log(childId);
     next();
 }
 
