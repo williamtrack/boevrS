@@ -1,4 +1,42 @@
 const router = require('express').Router();
+module.exports = router;
+const multer = require('multer');
+const fs = require('fs');
+
+let childId = null;
+//创建文件夹
+let uploadFolder = __dirname + '/../upload/pic';
+let createFolder = function (folder) {
+    try {
+        fs.accessSync(folder);
+    } catch (e) {
+        fs.mkdirSync(folder);
+    }
+};
+createFolder(uploadFolder);
+// 通过 filename 属性定制
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadFolder);    // 保存的路径，备注：需要自己创建
+    },
+    filename: function (req, file, cb) {
+        cb(null, childId);
+    }
+});
+// 通过 storage 选项来对 上传行为 进行定制化
+const upload = multer({storage: storage});
+
+function func(req, res, next) {
+    console.log(req);
+    console.log(req.query.childId);
+    childId = req.query.childId;
+    next();
+}
+router.post('/uploadPic', func, upload.single('file'), function (req, res) {
+    console.log("abc");
+    res.send('success');
+});
+
 
 router.post('/addChild', function (req, res) {
     let sqlCmd = 'INSERT INTO children(id,sessionId,childName,age,gender,leftEye,rightEye,myopia) VALUES(0,?,?,?,?,?,?,?)';
@@ -80,5 +118,3 @@ function dateInterval(date1, date2) {
     let day = parseInt(days / (1000 * 60 * 60 * 24));
     return day;
 }
-
-module.exports = router;
