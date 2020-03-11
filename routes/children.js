@@ -27,14 +27,13 @@ let storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 function func(req, res, next) {
-    console.log(req.query.childId);
-    console.log(req.body.childId);
+    childId = req.query.childId;
     next();
 }
 
 router.post('/uploadImg', func, upload.single('file'), function (req, res) {
     console.log(req.query.childId);
-    console.log("abc");
+    console.log(req.body.childId);
     res.send('success');
 });
 
@@ -55,7 +54,7 @@ router.get('/downloadImg', function (req, res) {
     };
     isFileExisted(path).then((e) => {
         // console.log(e);
-        fs.readFile(path,'' , function (err, data) {
+        fs.readFile(path, '', function (err, data) {
             if (err) {
                 console.log(err);
             } else {
@@ -68,8 +67,6 @@ router.get('/downloadImg', function (req, res) {
         // console.log('notExisted');
         res.end('notExisted');
     });
-    console.log("abc");
-    res.send('success');
 });
 
 
