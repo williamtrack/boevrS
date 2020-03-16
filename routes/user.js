@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const request = require('request');
+const multer = require('multer');
+const fs = require('fs');
+let userIdName = '';
 // const crypto = require('crypto');
 // const WXBizDataCrypt = require('../utils/WXBizDataCrypt');
 
@@ -7,6 +10,89 @@ const wx = {
     appid: 'wx2096a9d342339ba9',
     secret: '507c780aa28a5484bec695e4bbb29809'
 };
+
+
+//创建文件夹
+let uploadFolder = __dirname + '/../upload/userImg';
+let createFolder = function (folder) {
+    try {
+        fs.accessSync(folder);
+    } catch (e) {
+        fs.mkdirSync(folder);
+    }
+};
+createFolder(uploadFolder);
+
+
+// 通过 filename 属性定制
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadFolder);    // 保存的路径，备注：需要自己创建
+    },
+    filename: function (req, file, cb) {
+        cb(null, userIdName);
+    }
+});
+// 通过 storage 选项来对 上传行为 进行定制化
+const upload = multer({storage: storage});
+
+function func(req, res, next) {
+    userIdName = req.query.userIdName;
+    next();
+}
+
+//上传文件，目前已弃用
+router.post('/uploadUserImg', func, upload.single('file'), function (req, res) {
+    res.send('success');
+});
+
+router.get('/downloadUserImg', function (req, res) {
+    let userId = req.query.userId;
+    let path = './upload/userImg/' + userId;
+    //判断文件是否存在
+    let isFileExisted = function (filePath) {
+        return new Promise(function (resolve, reject) {
+            fs.access(filePath, (err) => {
+                if (err) {
+                    reject('notExisted');
+                } else {
+                    resolve('existed');
+                }
+            })
+        })
+    };
+    isFileExisted(path).then((e) => {
+        fs.readFile(path, '', function (err, data) {
+            if (err) {
+                console.log(err);
+            } else {
+                // console.log(e);
+                res.writeHead(200, {'Content-Type': ''});
+                res.end(data);
+            }
+        });
+    }, (e) => {
+        // console.log(e);
+        res.writeHead(404, {'Content-Type': ''});
+        res.end('notExisted');
+    });
+});
+
+router.get('/updateUserName', function (req, res, next) {
+        // console.log("---" + req.query.userId);
+        // console.log("---" + req.query.userName);
+        let sqlCmd = 'UPDATE users SET userName = ? WHERE binary id = ?';
+        let sqlParams = [req.query.userName, req.query.userId];
+        sqlQuery.query(sqlCmd, sqlParams).then((response) => {
+            // console.log(response);
+            res.send(response);
+        }, (err) => {
+            console.log(err);
+            res.send(err);
+        })
+    }
+);
+
 
 router.get('/checkLogin', function (req, res, next) {
     let sqlCmd = "SELECT * FROM sessions WHERE BINARY token=" + "'" + req.query.token + "'";

@@ -52,18 +52,17 @@ router.get('/downloadImg', function (req, res) {
         })
     };
     isFileExisted(path).then((e) => {
-        console.log(e);
         fs.readFile(path, '', function (err, data) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('existed');
+                // console.log(e);
                 res.writeHead(200, {'Content-Type': ''});
                 res.end(data);
             }
         });
     }, (e) => {
-        console.log(e);
+        // console.log(e);
         res.writeHead(404, {'Content-Type': ''});
         res.end('notExisted');
     });
