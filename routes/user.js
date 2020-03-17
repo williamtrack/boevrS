@@ -41,6 +41,17 @@ function func(req, res, next) {
     next();
 }
 
+router.get('/updateAddress',function (req,res) {
+    let sqlCmd = 'update users set address =?,coordinate=? where binary id = ?';
+    let sqlParams = [req.query.address,req.query.coordinate,req.query.userId];
+    sqlQuery.query(sqlCmd, sqlParams).then((response) => {
+        res.send('success');
+    }, (err) => {
+        res.send('fail');
+        console.log(err, 'updateChild err.');
+    });
+});
+
 //上传文件，目前已弃用
 router.post('/uploadUserImg', func, upload.single('file'), function (req, res) {
     res.send('success');
@@ -79,8 +90,6 @@ router.get('/downloadUserImg', function (req, res) {
 });
 
 router.get('/updateUserName', function (req, res, next) {
-        // console.log("---" + req.query.userId);
-        // console.log("---" + req.query.userName);
         let sqlCmd = 'UPDATE users SET userName = ? WHERE binary id = ?';
         let sqlParams = [req.query.userName, req.query.userId];
         sqlQuery.query(sqlCmd, sqlParams).then((response) => {
