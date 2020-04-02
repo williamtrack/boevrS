@@ -15,8 +15,8 @@ router.get('/getDir', function (req, res) {
 });
 
 router.get('/download', function (req, res) {
-    let file = req.query.file;
-    fs.readFile('.//upload//unity' + file, function (err, data) {
+    let dir = req.query.dir;
+    fs.readFile('.//upload//unity' + dir, function (err, data) {
         if (err) {
             console.log(err);
         } else {

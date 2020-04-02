@@ -20,7 +20,7 @@ function getDirTree(inputPath, callback) {
 
 function toJsonStr(ss) {
     let tmp = ss.substring(0, ss.length - 2);
-    tmp = '{"files": ["' + tmp + ']}';
+    tmp = '{"dirs": ["' + tmp + ']}';
     return tmp;
 }
 function toPath(ss) {
