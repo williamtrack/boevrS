@@ -40,6 +40,7 @@ app.use('/ctrl', require('./routes/ctrl'));
 app.use('/logsTrain', require('./routes/logsTrain'));
 app.use('/advice',require('./routes/advice'));
 app.use('/version',require('./routes/version'));
+app.use('/unity',require('./routes/unity'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
