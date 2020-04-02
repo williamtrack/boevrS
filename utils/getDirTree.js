@@ -1,6 +1,6 @@
 var fs = require("fs");
 
-let str = '';
+global.str='';
 
 function getDirTree(inputPath, callback) {
     let files = fs.readdirSync(inputPath);

@@ -3,14 +3,16 @@ module.exports = router;
 
 const multer = require('multer');
 const fs = require('fs');
-const getDir = require('../utils/getDirTree');
+
+let getDir = require('../utils/getDirTree');
 
 router.get('/getDir', function (req, res) {
     let data = '';
     getDir('.//upload//unity', function (e) {
-        console.log(JSON.parse(e));
+        // console.log(JSON.parse(e));
         data = e;
     });
+    global.str='';
     res.end(data);
 });
 
