@@ -39,7 +39,7 @@ server.listen(port);
 servers.listen(ports);
 
 // wsServer({server: server});
-wssServer({server: servers});
+wssServer({server: server});
 
 // server.on('request', function (req, res) {
 //     // console.log(req);
