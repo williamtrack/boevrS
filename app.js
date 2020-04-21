@@ -17,7 +17,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(__dirname + '/public/images'));
-app.use(express.static(__dirname + '/pages/vrHouse'));
+// app.use(express.static(__dirname + '/pages/vrHouse'));
+app.use('/static', express.static(__dirname + '/pages/vrHouse'));
 
 //访问/public/video.mp4,直接在浏览器中输入http://127.0.0.1/video.mp4 即可（也可重定向），即可在线预览
 

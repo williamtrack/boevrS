@@ -14,5 +14,5 @@ router.get('/', function (req, res) {
     //         res.end(data);
     //     }
     // });
-    if (req.url == '/') return res.redirect(301, 'https://boevr.cn/index.html');
+    if (req.url == '/') return res.redirect(301, 'https://boevr.cn/static/index.html');
 });
