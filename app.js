@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(__dirname + '/public/images'));
 // app.use(express.static(__dirname + '/pages/vrHouse'));
-app.use('/static', express.static(__dirname + '/pages/vrHouse'));
+app.use('/static', express.static(__dirname + '/pages'));
 
 //访问/public/video.mp4,直接在浏览器中输入http://127.0.0.1/video.mp4 即可（也可重定向），即可在线预览
 
@@ -43,7 +43,7 @@ app.use('/logsTrain', require('./routes/logsTrain'));
 app.use('/advice', require('./routes/advice'));
 app.use('/version', require('./routes/version'));
 app.use('/unity', require('./routes/unity'));
-app.use('/vrHouse', require('./routes/vrHouse'));
+app.use('/feature', require('./routes/feature'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
