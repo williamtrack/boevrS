@@ -3,6 +3,7 @@
 node_modules
 
 pages/vrHouse
+pages/rtmp
 public/*
 !public/.gitignore
 !public/images
