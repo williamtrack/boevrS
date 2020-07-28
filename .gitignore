@@ -1,6 +1,7 @@
 # IntelliJ project files
 .idea
 node_modules
+/https
 
 pages/vrHouse
 pages/rtmp
