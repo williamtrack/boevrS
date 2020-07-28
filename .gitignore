@@ -1,14 +1,13 @@
 # IntelliJ project files
-.idea
-node_modules
+/.idea
+/node_modules
 /https
 
-pages/vrHouse
-pages/rtmp
-public/*
-!public/.gitignore
-!public/images
-upload
+/pages/vrHouse
+/pages/rtmp
+/public/*
+!/public/images
+/upload
 
 # Windows
 [Dd]esktop.ini
